@@ -1208,6 +1208,13 @@ namespace Microsoft.Azure.Cosmos
                 throw new NotImplementedException(nameof(querySpec));
             }
 
+            bool? enableScanInQuery = null;
+
+            if (options is CosmosQueryRequestOptions queryRequestOptions)
+            {
+                enableScanInQuery = queryRequestOptions.EnableScanInQuery;
+            }
+
             OperationType queryOperationType = this.client.CosmosConfiguration.ConnectionMode == ConnectionMode.Direct ? OperationType.Query : OperationType.SqlQuery;
             Stream streamPayload = this.cosmosJsonSerializer.ToStream(querySpec);
             return ExecUtils.ProcessResourceOperationAsync<CosmosResponseMessage>(
@@ -1220,6 +1227,7 @@ namespace Microsoft.Azure.Cosmos
                 {
                     CosmosQueryRequestOptions.FillContinuationToken(request, continuationToken);
                     CosmosQueryRequestOptions.FillMaxItemCount(request, maxItemCount);
+                    CosmosQueryRequestOptions.FillEnableScanInQuery(request, enableScanInQuery);
                 },
                 responseCreator: response => response,
                 partitionKey: partitonKey,

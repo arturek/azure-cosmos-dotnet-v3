@@ -47,7 +47,7 @@ namespace Microsoft.Azure.Cosmos
             return await this.ShouldRetryAsyncInternal(clientException?.StatusCode,
                 clientException?.GetSubStatus(),
                 cancellationToken,
-                () => this.nextRetryPolicy?.ShouldRetryAsync(exception, cancellationToken));
+                () => this.nextRetryPolicy?.ShouldRetryAsync(exception, cancellationToken) ?? Task.FromResult(ShouldRetryResult.NoRetry()));
         }
 
         /// <summary> 
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Cosmos
             return await this.ShouldRetryAsyncInternal(cosmosResponseMessage?.StatusCode,
                 cosmosResponseMessage?.Headers.SubStatusCode,
                 cancellationToken,
-                () => this.nextRetryPolicy?.ShouldRetryAsync(cosmosResponseMessage, cancellationToken));
+                () => this.nextRetryPolicy?.ShouldRetryAsync(cosmosResponseMessage, cancellationToken) ?? Task.FromResult(ShouldRetryResult.NoRetry()));
         }
 
         public void OnBeforeSendRequest(DocumentServiceRequest request)

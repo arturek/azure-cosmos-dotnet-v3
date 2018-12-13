@@ -175,5 +175,15 @@ namespace Microsoft.Azure.Cosmos
                 request.Headers.Add(HttpConstants.HttpHeaders.PageSize, maxItemCount.Value.ToString(CultureInfo.InvariantCulture));
             }
         }
+
+        internal static void FillEnableScanInQuery(
+            CosmosRequestMessage request,
+            bool? enableScanInQuery)
+        {
+            if (enableScanInQuery == true)
+            {
+                request.Headers.Add(HttpConstants.HttpHeaders.EnableScanInQuery, bool.TrueString);
+            }
+        }
     }
 }

@@ -1227,7 +1227,6 @@ namespace Microsoft.Azure.Cosmos
                 {
                     CosmosQueryRequestOptions.FillContinuationToken(request, continuationToken);
                     CosmosQueryRequestOptions.FillMaxItemCount(request, maxItemCount);
-                    CosmosQueryRequestOptions.FillEnableScanInQuery(request, enableScanInQuery);
                 },
                 responseCreator: response => response,
                 partitionKey: partitonKey,

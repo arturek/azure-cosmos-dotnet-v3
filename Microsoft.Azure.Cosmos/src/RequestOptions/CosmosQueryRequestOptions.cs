@@ -136,6 +136,11 @@ namespace Microsoft.Azure.Cosmos
                 request.Headers.Add(HttpConstants.HttpHeaders.ContentType, MediaTypes.QueryJson);
             }
 
+            if (this.EnableScanInQuery.HasValue & this.EnableScanInQuery.Value)
+            {
+                request.Headers.Add(HttpConstants.HttpHeaders.EnableScanInQuery, bool.TrueString);
+            }
+
             CosmosRequestOptions.SetSessionToken(request, this.SessionToken);
             CosmosRequestOptions.SetConsistencyLevel(request, this.ConsistencyLevel);
 
@@ -173,16 +178,6 @@ namespace Microsoft.Azure.Cosmos
             if (maxItemCount != null && maxItemCount.HasValue)
             {
                 request.Headers.Add(HttpConstants.HttpHeaders.PageSize, maxItemCount.Value.ToString(CultureInfo.InvariantCulture));
-            }
-        }
-
-        internal static void FillEnableScanInQuery(
-            CosmosRequestMessage request,
-            bool? enableScanInQuery)
-        {
-            if (enableScanInQuery == true)
-            {
-                request.Headers.Add(HttpConstants.HttpHeaders.EnableScanInQuery, bool.TrueString);
             }
         }
     }

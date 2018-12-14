@@ -1208,13 +1208,6 @@ namespace Microsoft.Azure.Cosmos
                 throw new NotImplementedException(nameof(querySpec));
             }
 
-            bool? enableScanInQuery = null;
-
-            if (options is CosmosQueryRequestOptions queryRequestOptions)
-            {
-                enableScanInQuery = queryRequestOptions.EnableScanInQuery;
-            }
-
             OperationType queryOperationType = this.client.CosmosConfiguration.ConnectionMode == ConnectionMode.Direct ? OperationType.Query : OperationType.SqlQuery;
             Stream streamPayload = this.cosmosJsonSerializer.ToStream(querySpec);
             return ExecUtils.ProcessResourceOperationAsync<CosmosResponseMessage>(

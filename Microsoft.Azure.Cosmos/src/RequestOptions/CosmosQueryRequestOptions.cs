@@ -136,7 +136,7 @@ namespace Microsoft.Azure.Cosmos
                 request.Headers.Add(HttpConstants.HttpHeaders.ContentType, MediaTypes.QueryJson);
             }
 
-            if (this.EnableScanInQuery.HasValue & this.EnableScanInQuery.Value)
+            if (this.EnableScanInQuery.HasValue && this.EnableScanInQuery.Value)
             {
                 request.Headers.Add(HttpConstants.HttpHeaders.EnableScanInQuery, bool.TrueString);
             }

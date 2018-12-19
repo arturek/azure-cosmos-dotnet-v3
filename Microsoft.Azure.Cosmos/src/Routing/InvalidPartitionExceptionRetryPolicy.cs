@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Cosmos.Routing
                 continueIfNotHandled: null);
         }
 
-        private Task<ShouldRetryResult> ShouldRetryAsyncInternal(
+        private async Task<ShouldRetryResult> ShouldRetryAsyncInternal(
             HttpStatusCode? statusCode, 
             SubStatusCodes? subStatusCode, 
             string resourceIdOrFullName, 
@@ -78,15 +78,23 @@ namespace Microsoft.Azure.Cosmos.Routing
                     }
 
                     this.retried = true;
-                    return Task.FromResult(ShouldRetryResult.RetryAfter(TimeSpan.Zero));
+                    return ShouldRetryResult.RetryAfter(TimeSpan.Zero);
                 }
                 else
                 {
-                    return Task.FromResult(ShouldRetryResult.NoRetry());
+                    return ShouldRetryResult.NoRetry();
                 }
             }
 
-            return continueIfNotHandled != null ? continueIfNotHandled() : Task.FromResult(ShouldRetryResult.NoRetry());
+
+            if (continueIfNotHandled != null)
+            {
+                return await continueIfNotHandled() ?? ShouldRetryResult.NoRetry();
+            }
+            else
+            {
+                return await Task.FromResult(ShouldRetryResult.NoRetry());
+            }
         }
 
         public void OnBeforeSendRequest(DocumentServiceRequest request)

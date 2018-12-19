@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Cosmos
             return await this.ShouldRetryAsyncInternal(cosmosResponseMessage?.StatusCode,
                 cosmosResponseMessage?.Headers.SubStatusCode,
                 cancellationToken,
-                () => this.nextRetryPolicy?.ShouldRetryAsync(cosmosResponseMessage, cancellationToken));
+                continueIfNotHandled: null);
         }
 
         public void OnBeforeSendRequest(DocumentServiceRequest request)

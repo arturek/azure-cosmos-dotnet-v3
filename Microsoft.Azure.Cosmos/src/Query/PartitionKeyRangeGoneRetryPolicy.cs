@@ -113,7 +113,7 @@ namespace Microsoft.Azure.Cosmos
 
             if(continueIfNotHandled != null)
             {
-                return await continueIfNotHandled() ?? await Task.FromResult(ShouldRetryResult.NoRetry());
+                return await continueIfNotHandled() ?? ShouldRetryResult.NoRetry();
             }
             else
             {

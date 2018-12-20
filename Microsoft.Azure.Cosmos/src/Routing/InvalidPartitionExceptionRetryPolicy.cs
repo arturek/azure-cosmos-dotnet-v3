@@ -59,7 +59,7 @@ namespace Microsoft.Azure.Cosmos.Routing
                 continueIfNotHandled: null);
         }
 
-        private async Task<ShouldRetryResult> ShouldRetryAsyncInternal(
+        private Task<ShouldRetryResult> ShouldRetryAsyncInternal(
             HttpStatusCode? statusCode, 
             SubStatusCodes? subStatusCode, 
             string resourceIdOrFullName, 
@@ -78,22 +78,21 @@ namespace Microsoft.Azure.Cosmos.Routing
                     }
 
                     this.retried = true;
-                    return ShouldRetryResult.RetryAfter(TimeSpan.Zero);
+                    return Task.FromResult(ShouldRetryResult.RetryAfter(TimeSpan.Zero));
                 }
                 else
                 {
-                    return ShouldRetryResult.NoRetry();
+                    return Task.FromResult(ShouldRetryResult.NoRetry());
                 }
             }
 
-
             if (continueIfNotHandled != null)
             {
-                return await continueIfNotHandled() ?? ShouldRetryResult.NoRetry();
+                return continueIfNotHandled().ContinueWith(x => x.Result ?? ShouldRetryResult.NoRetry());
             }
             else
             {
-                return ShouldRetryResult.NoRetry();
+                return Task.FromResult(ShouldRetryResult.NoRetry());
             }
         }
 

@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Cosmos.Routing
             }
             else
             {
-                return await Task.FromResult(ShouldRetryResult.NoRetry());
+                return ShouldRetryResult.NoRetry();
             }
         }
 
